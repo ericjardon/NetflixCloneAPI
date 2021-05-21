@@ -1,4 +1,8 @@
 GET http://localhost:3010/titles
 
 #######
-GET http://localhost:3010/titles/query/?type=movie&country=Mexico
+GET http://localhost:3010/titles/query/?type=Movie&title=&country=Mexico
+
+#######
+
+GET http://localhost:3010/titles/actor/?cast=León+Larregui
