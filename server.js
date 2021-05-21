@@ -1,16 +1,18 @@
 const { MongoClient } = require("mongodb");
 const express = require("express");
 const server = express();
-const PORT = 3010;
+require('dotenv').config();
+
 const titlesRouter = require("./routers/titlesRouter.js");
 
-async function main() {
+
+/* async function main() {
   const uri =
-    "mongodb+srv://dbUser:javascript-me@cluster0.fidim.mongodb.net/netflix_titles?retryWrites=true&w=majority";
+    process.env.DB_CONNECTION;
 
   const client = new MongoClient(uri);
   try {
-    await client.connect();
+    const db = await client.connect();
     console.log("Succesful connection to MongoDB");
   } catch (e) {
     console.log(e);
@@ -18,8 +20,8 @@ async function main() {
     await client.close(); // why
   }
 }
-
-main().catch(console.error);
+main().catch(console.error("Error en conexión con MongoDB")); */
 
 server.use("/titles", titlesRouter);
-server.listen(PORT, () => console.log("Server is running..."));
+
+module.exports = server;
