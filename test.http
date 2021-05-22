@@ -1,4 +1,4 @@
-GET http://localhost:3010/titles
+GET http://localhost:3010/titles/
 
 #######
 GET http://localhost:3010/titles/query/?type=Movie&title=&country=Mexico

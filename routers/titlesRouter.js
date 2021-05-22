@@ -7,8 +7,9 @@ const titles = require("../db").db().collection("titles");
 
 // URL Query params: type, title, country
 
-router.get("/", () => {
-  console.log("Get all the titles in the database");
+router.get("/", async (req, res) => {
+  let results = await titles.find().limit(3).toArray();
+  res.status(200).json({ message: "Query OK", data: results });
 }); // getAll
 
 router.get("/query/", async (req, res) => {
@@ -60,23 +61,8 @@ router.get("/stats/", async (req, res) => {
 
 module.exports = router;
 
-// List of movies and
-// router.get("/actor/", async (req, res) => {
-//   const actorName = req.query.cast;
-//   if (typeof(actorName) != "string") {
-//     res.status(500).send("ERROR");
-//   }
-//   console.log("Searching actor..", actorName);
-
-//   let results = await titles.aggregate({$match:{$text: {$search: `"${actorName}"`}}}).toArray();
-//   if (results.length) {
-//     res.status(200).send(results);
-//   } else {
-//     res.status(200).send("No results");
-//   }
-// });
-
-titles.createIndex({ cast: "text" });
+// Creation of the index
+// titles.createIndex({ cast: "text" });
 
 router.get("/actor/", async (req, res) => {
   const actorName = req.query.cast;
@@ -92,17 +78,3 @@ router.get("/actor/", async (req, res) => {
   console.log(results);
   res.send("Query for actor");
 });
-
-/* search(searchTerm) {
-        return new Promise(async (resolve, reject) => {
-            if (typeof(searchTerm) == "string"){
-                let searchResults = await Post.postQuery([
-                {$match: {$text: {$search: searchTerm}}},
-                {$sort: {score: {$meta: "textScore"}}}    // score is how relevant
-                ]);
-                resolve(searchResults);
-            }else {
-                reject();
-            }
-        })
-} */

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ericjardon/NetflixCloneAPI#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "mongodb": "^3.6.7",
