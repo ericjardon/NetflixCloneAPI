@@ -1,8 +1,9 @@
 const express = require("express");
+const { db } = require("../db");
 require("dotenv").config(); // to load the values specified in .env
 const router = express.Router();
 
-const titles = require('../db').db().collection('titles');
+const titles = require("../db").db().collection("titles");
 
 // URL Query params: type, title, country
 
@@ -15,18 +16,18 @@ router.get("/query/", async (req, res) => {
 
   const query = {};
 
-  if (queryString.type!==''){
+  if (queryString.type !== "") {
     query.type = queryString.type;
   }
 
-  if (queryString.title!==''){
+  if (queryString.title !== "") {
     query.title = queryString.title;
   }
-  
-  if (queryString.country!==''){
+
+  if (queryString.country !== "") {
     query.country = queryString.country;
   }
-  
+
   console.log("Query to send:", query);
   let results = await titles.find(query).toArray();
   console.log(results);
@@ -40,18 +41,18 @@ router.get("/stats/", async (req, res) => {
 
   const query = {};
 
-  if (queryString.type!==''){
+  if (queryString.type !== "") {
     query.type = queryString.type;
   }
 
-  if (queryString.title!==''){
+  if (queryString.title !== "") {
     query.title = queryString.title;
   }
-  
-  if (queryString.country!==''){
+
+  if (queryString.country !== "") {
     query.country = queryString.country;
   }
-  
+
   console.log("Query to send:", query);
   let results = await titles.find(query).count();
   console.log(results);
@@ -59,7 +60,7 @@ router.get("/stats/", async (req, res) => {
 
 module.exports = router;
 
-// List of movies and 
+// List of movies and
 // router.get("/actor/", async (req, res) => {
 //   const actorName = req.query.cast;
 //   if (typeof(actorName) != "string") {
@@ -75,17 +76,22 @@ module.exports = router;
 //   }
 // });
 
+titles.createIndex({ cast: "text" });
+
 router.get("/actor/", async (req, res) => {
-    const actorName = req.query.cast;
-    if (typeof(actorName) != "string") {
-      res.status(500).send("ERROR");
-    }
-    console.log("Searching actor..", actorName);
-  
-    let results = await titles.aggregate({$match:{$text: {$search: `"${actorName}"`}}}).toArray();
-    // do not try, no text index
-    res.send("Query for actor");
-  });
+  const actorName = req.query.cast;
+  if (typeof actorName != "string") {
+    res.status(500).send("ERROR");
+  }
+  console.log("Searching actor..", actorName);
+
+  let results = await titles
+    .find({ $text: { $search: `"${actorName}"` } })
+    .toArray();
+
+  console.log(results);
+  res.send("Query for actor");
+});
 
 /* search(searchTerm) {
         return new Promise(async (resolve, reject) => {

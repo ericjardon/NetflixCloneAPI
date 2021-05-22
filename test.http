@@ -5,4 +5,4 @@ GET http://localhost:3010/titles/query/?type=Movie&title=&country=Mexico
 
 #######
 
-GET http://localhost:3010/titles/actor/?cast=León+Larregui
+GET http://localhost:3010/titles/actor/?cast=Samuel+L.+Jackson
