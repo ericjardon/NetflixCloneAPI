@@ -32,7 +32,7 @@ router.get("/query/", async (req, res) => {
   console.log("Query to send:", query);
   let results = await titles.find(query).toArray();
   console.log(results);
-  // res.status(200).json(result);
+  res.status(200).json({ message: "Normal Query OK", data: results });
 });
 
 // STATISTICS
@@ -46,8 +46,8 @@ router.get("/stats/", async (req, res) => {
     query.type = queryString.type;
   }
 
-  if (queryString.title !== "") {
-    query.title = queryString.title;
+  if (queryString.release_year !== "") {
+    query.release_year = Number(queryString.release_year);
   }
 
   if (queryString.country !== "") {
@@ -57,15 +57,12 @@ router.get("/stats/", async (req, res) => {
   console.log("Query to send:", query);
   let results = await titles.find(query).count();
   console.log(results);
+  res.status(200).json({ message: "Stats Query OK", data: results });
 });
-
-module.exports = router;
-
-// Creation of the index
-// titles.createIndex({ cast: "text" });
 
 router.get("/actor/", async (req, res) => {
   const actorName = req.query.cast;
+
   if (typeof actorName != "string") {
     res.status(500).send("ERROR");
   }
@@ -76,5 +73,10 @@ router.get("/actor/", async (req, res) => {
     .toArray();
 
   console.log(results);
-  res.send("Query for actor");
+  res.status(200).json({ message: "Actor Query OK", data: results });
 });
+
+module.exports = router;
+
+// Creation of the index
+// titles.createIndex({ cast: "text" });
