@@ -41,6 +41,7 @@ router.get("/stats/", async (req, res) => {
   const queryString = req.query;
 
   const query = {};
+  let isCountryQuery = false;
 
   if (queryString.type !== "") {
     query.type = queryString.type;
@@ -52,12 +53,19 @@ router.get("/stats/", async (req, res) => {
 
   if (queryString.country !== "") {
     query.country = queryString.country;
+    isCountryQuery = true;
   }
 
+  let results;
+
   console.log("Query to send:", query);
-  let results = await titles.find(query).count();
-  console.log(results);
-  res.status(200).json({ message: "Stats Query OK", data: results });
+  if (isCountryQuery) {
+    const count = await titles.find();
+  } else {
+    results = await titles.find(query).count();
+    console.log(results);
+    res.status(200).json({ message: "Stats Query OK", data: results });
+  }
 });
 
 router.get("/actor/", async (req, res) => {
