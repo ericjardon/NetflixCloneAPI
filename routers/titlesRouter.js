@@ -76,6 +76,12 @@ router.get("/actor/", async (req, res) => {
   res.status(200).json({ message: "Actor Query OK", data: results });
 });
 
+router.get("/countries", async (req, res) => {
+  let results = await titles.distinct("country");
+
+  res.status(200).json({ message: "Countries query OK", data: results });
+});
+
 module.exports = router;
 
 // Creation of the index
