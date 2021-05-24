@@ -31,7 +31,6 @@ router.get("/query/", async (req, res) => {
 
   console.log("Query to send:", query);
   let results = await titles.find(query).toArray();
-  console.log(results);
   res.status(200).json({ message: "Normal Query OK", data: results });
 });
 
@@ -60,7 +59,6 @@ router.get("/stats/", async (req, res) => {
 
   console.log("Query to send:", query);
   results = await titles.find(query).count();
-  console.log(results);
   res.status(200).json({ message: "Stats Query OK", data: results });
 });
 
@@ -76,7 +74,6 @@ router.get("/actor/", async (req, res) => {
     .find({ $text: { $search: `"${actorName}"` } })
     .toArray();
 
-  console.log(results);
   res.status(200).json({ message: "Actor Query OK", data: results });
 });
 
